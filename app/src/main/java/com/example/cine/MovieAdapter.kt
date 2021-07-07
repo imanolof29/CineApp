@@ -10,27 +10,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.cine.models.Movie
 import com.squareup.picasso.Picasso
 
-class MovieAdapter(var movies:List<Movie>) : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val title: TextView
-        val movieRating: RatingBar
-        //val overview: TextView
-        val image: ImageView
+class MovieAdapter(var movies:List<Movie>, val listener: OnItemClickListener) : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
+        val title: TextView = view.findViewById(R.id.tvTitle)
+        val rating: RatingBar = view.findViewById(R.id.movieRating)
+        val image: ImageView = view.findViewById(R.id.image)
 
         init {
-            title = view.findViewById(R.id.tvTitle)
-            movieRating = view.findViewById(R.id.movieRating)
-            //overview = view.findViewById(R.id.txtOverview)
-            image = view.findViewById(R.id.image)
-            //itemView.setOnClickListener(this)
+            itemView.setOnClickListener(this)
         }
 
-        /*override fun onClick(v: View?) {
+        override fun onClick(v: View?) {
             val position = adapterPosition
             if(position!=RecyclerView.NO_POSITION){
                 listener.onItemClick(position)
             }
-        }*/
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -41,8 +36,7 @@ class MovieAdapter(var movies:List<Movie>) : RecyclerView.Adapter<MovieAdapter.V
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.title.text = movies[position].title
-        holder.movieRating.rating = movies[position].rating/2
-        //holder.overview.text = movies[position].overview
+        holder.rating.rating = movies[position].rating.toFloat()
         //get the image via url
         Picasso.get()
             .load(movies[position].imageURL)
@@ -53,6 +47,3 @@ class MovieAdapter(var movies:List<Movie>) : RecyclerView.Adapter<MovieAdapter.V
     override fun getItemCount(): Int = movies.size
 }
 
-interface OnItemClickListener{
-    fun onItemClick(position: Int)
-}

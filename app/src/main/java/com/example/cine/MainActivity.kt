@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
             runOnUiThread{
                 if(call.isSuccessful){
                     movies = call.body() as MutableList<Movie>
-                    movieAdapter = MovieAdapter(movies)
+                    movieAdapter = MovieAdapter(movies, this@MainActivity)
                     binding.recyclerview.setHasFixedSize(true)
                     binding.recyclerview.layoutManager = LinearLayoutManager(this@MainActivity)
                     binding.recyclerview.adapter = movieAdapter
