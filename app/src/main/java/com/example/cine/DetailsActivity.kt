@@ -19,5 +19,7 @@ class DetailsActivity : AppCompatActivity() {
             .into(binding.detailsImage)
 
         binding.tvDetailsTitle.text = intent.getStringExtra("title")
+        binding.tvOverview.text = intent.getStringExtra("overview")
+        binding.ratingBar.rating = intent.getFloatExtra("rating", 0.0f)
     }
 }

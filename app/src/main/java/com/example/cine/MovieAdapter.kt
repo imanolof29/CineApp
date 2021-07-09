@@ -13,7 +13,7 @@ import com.squareup.picasso.Picasso
 class MovieAdapter(var movies:List<Movie>, val listener: OnItemClickListener) : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
         val title: TextView = view.findViewById(R.id.tvTitle)
-        val rating: RatingBar = view.findViewById(R.id.movieRating)
+        //val rating: RatingBar = view.findViewById(R.id.movieRating)
         val image: ImageView = view.findViewById(R.id.image)
 
         init {
@@ -36,7 +36,7 @@ class MovieAdapter(var movies:List<Movie>, val listener: OnItemClickListener) : 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.title.text = movies[position].title
-        holder.rating.rating = movies[position].rating.toFloat()
+        //holder.rating.rating = movies[position].rating/2
         //get the image via url
         Picasso.get()
             .load(movies[position].imageURL)

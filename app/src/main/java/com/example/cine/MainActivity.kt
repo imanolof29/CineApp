@@ -1,10 +1,12 @@
 package com.example.cine
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cine.databinding.ActivityMainBinding
 import com.example.cine.models.Movie
@@ -25,12 +27,34 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
 
     private lateinit var matchedMovies:MutableList<Movie>
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.options_menu, menu)
+
+        val searchItem: MenuItem? = menu?.findItem(R.id.search)
+        val searchView: SearchView? = searchItem?.actionView as SearchView
+
+        searchView!!.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                search(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                search(newText)
+                return true
+            }
+        })
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initRecyclerView()
-        performSearch()
     }
 
     private fun initRecyclerView(){
@@ -58,21 +82,7 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
             .build()
     }
 
-    private fun performSearch(){
-        binding.svMovies.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                search(query)
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                search(newText)
-                return true
-            }
-        })
-    }
-
-    private fun search(query:String?) {
+    private fun search(query:String) {
         matchedMovies = mutableListOf<Movie>()
 
         query?.let {
@@ -100,8 +110,8 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
         val details = Intent(this, DetailsActivity::class.java)
         details.putExtra("title", movies[position].title)
         details.putExtra("image", movies[position].imageURL)
+        details.putExtra("overview", movies[position].overview)
+        details.putExtra("rating", movies[position].rating/2)
         startActivity(details)
     }
-
-
 }
